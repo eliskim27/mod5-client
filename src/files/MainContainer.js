@@ -1,29 +1,27 @@
 import React from 'react';
-import AdminContainer from './AdminContainer';
-import BigsContainer from './BigsContainer';
-import LittlesContainer from './LittlesContainer';
+import AdminContainer       from './AdminContainer';
+import BigsContainer        from './BigsContainer';
+import LittlesContainer     from './LittlesContainer';
 
 class MainContainer extends React.Component {
 
     currentContainer = (userType) => {
-        if (userType === 'admin') {
-            return(
-                <AdminContainer
-                    // allBigs={this.props.allBigs}
-                    // allLittles={this.props.allLittles}
-                />)
-        } if (userType === 'big') {
-            return(
-                <BigsContainer
-                    allBigs={this.props.allBigs}
-                />)
-        } if (userType === 'little') {
-            return(
-                <LittlesContainer
-                    allLittles={this.props.allLittles}
-                />)
-        } else {
-            return null
+        switch (userType) {
+            case "admin":
+                return (<AdminContainer
+                        allBigs={this.props.allBigs}
+                        allLittles={this.props.allLittles}
+                        />);
+            case "big":
+                return (<BigsContainer
+                        // allBigs={this.props.allBigs}  // might not be needed
+                        />);
+            case "little":
+                return (<LittlesContainer
+                        allLittles={this.props.allLittles}
+                        />);
+            default:
+                return null
         }
     }
 
@@ -37,3 +35,50 @@ class MainContainer extends React.Component {
 }
 
 export default MainContainer
+
+
+
+
+// import React from 'react';
+// import { Route } from 'react-router-dom';
+// import AdminContainer from './AdminContainer';
+// import BigsContainer from './BigsContainer';
+// import LittlesContainer from './LittlesContainer';
+
+// class MainContainer extends React.Component {
+
+//     currentContainer = (userType) => {
+//         if (userType === 'admin') {
+//             return(
+//                 <Route path='/admin' render={() => 
+//                     <AdminContainer
+//                         // allBigs={this.props.allBigs}
+//                         // allLittles={this.props.allLittles}
+//                 />}/>)
+//         } if (userType === 'big') {
+//             return(
+//                 <Route path='/bigs' render={() => 
+//                     <BigsContainer
+//                         allBigs={this.props.allBigs}
+//                 />}/>)
+//         } if (userType === 'little') {
+//             return(
+//                 <Route path='/littles' render={() => 
+//                     <LittlesContainer
+//                         allLittles={this.props.allLittles}
+//                 />}/>)
+//         } else {
+//             return null
+//         }
+//     }
+
+//     render() {
+//         return(
+//             this.currentContainer(this.props.userType)
+//         )
+//     }
+
+
+// }
+
+// export default MainContainer

@@ -20,9 +20,11 @@ class NavBar extends React.Component {
             <div>
                 <button>Home</button>
                 <button>Menu</button>
-                {this.currentMenuButton(this.props.userType)}
+                {/* {this.currentMenuButton(this.props.userType)} */}
 
                 <button>Current User</button> 
+                <button>Login</button>
+                <button>Sign Up</button>
             </div>
         )
     }
@@ -31,3 +33,4 @@ class NavBar extends React.Component {
 }
 
 export default NavBar
+
