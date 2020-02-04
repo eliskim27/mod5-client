@@ -17,7 +17,7 @@ class SignUp extends React.Component {
         e.preventDefault()
         
         if (this.state.password === this.state.passwordConfirmation) {
-            fetch(`http://localhost:3000/api/v1/${this.state.userType}`, {
+            fetch(`http://localhost:3000/api/v1/${this.state.userType}s`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -26,6 +26,7 @@ class SignUp extends React.Component {
                 body: JSON.stringify({
                     username: this.state.username,
                     password: this.state.password,
+                    user_type: this.state.userType
                 })
             })
             .then(resp => resp.json())
@@ -52,29 +53,29 @@ class SignUp extends React.Component {
                     value={this.state.username} 
                     onChange={this.handleChange} 
                     placeholder="Username" 
-                />
+                /> <br/>
                 <input 
                     name="password" 
                     value={this.state.password} 
                     onChange={this.handleChange} 
                     placeholder="Password" 
                     type="password"
-                />
+                /> <br/>
                 <input 
                     name="passwordConfirmation" 
                     value={this.state.passwordConfirmation} 
                     onChange={this.handleChange} 
                     placeholder="Confirm Password" 
                     type="password"
-                />
+                /> <br/>
                 <select onChange={(e) => {
                     this.setState({userType: e.target.value})
                 }}>
-                    <option value="admins">admin</option>
-                    <option value="bigs">big</option>
-                    <option value="littles">little</option>
+                    <option value="admin">admin</option>
+                    <option value="big">big</option>
+                    <option value="little">little</option>
                     <option selected value="none">none (remove later, for testing)</option>
-                </select>
+                </select> <br/>
                 <button type="submit">Sign Up</button>
                 </form>
             </div>

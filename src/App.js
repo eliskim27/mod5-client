@@ -1,105 +1,104 @@
 import React from 'react';
 import './App.css';
-import * as fetches from './fetches'
-import MainContainer from './files/MainContainer';
-import NavBar from './files/NavBar';
-import Login from './files/Login';
-import SignUp from './files/SignUp';
-import GeneralContainer from './files/GeneralContainer';
+import * as Fetches from './Fetches'
+import { Route, Switch } from 'react-router-dom';
+
+// CHILDREN
+  import MainContainer            from './files/MainContainer';
+  import GeneralContainer         from './files/GeneralContainer'
+  import NavBar                   from './NavBar/NavBar';
+  // import footer
+  // import donate button
+  import Login                    from './files/Login';
+  import SignUp                   from './files/SignUp';
 
 class App extends React.Component {
   state = {
     allBigs: [],
     allLittles: [],
-    userType: 'big',       //'none', 'big', 'little', 'admin'
     currentUser: null,
-    mainShow: "main"     //'general', 'main', 'signup', 'login'
+    userType: 'none',           //'none', 'big', 'little', 'admin'
+    menuSelect: "profile"       //'none', 'profile', 'timesheet', 'all littles', 'all appts', 'all bigs', 'pending matches', 'bigs index', 'littles index', 'matches index', 'appt index'
   } 
 
-  mainShow = () => {
-    console.log("main show")
+
+  setUser = (user) => {
+    this.setState({currentUser: user})
   }
 
-  // setUser = (user) => {
-  //   this.setState({
-  //     currentUser: user
-  //   }, () => {
-  //     this.props.history.push('/bigs')})
-  // }
+  menuSelect = (e) => {
+    this.setState({menuSelect: e.target.value})
+  }
 
-  // router = (type) => {
-  //   switch(type){
-  //     case ''
-  //   }
-  // }
+  router = (type, payload) => {
+    switch(type){
+      case 'SET_USER':
+        this.setState({currentUser: payload})
+      default:
+        break;
+    }
+  }
+
 
   componentDidMount() {
-    fetches
+    Fetches
     .fetchBigs()
     .then(allBigs => {
       this.setState({allBigs: allBigs})
     })
-    fetches
+    Fetches
     .fetchLittles()
     .then(allLittles => {
       this.setState({allLittles: allLittles})
     })
   }
 
-  homepageRender = (mainShow) => {
-    switch (mainShow) {
-      case "main":
-        return (
-          <MainContainer
-          userType={this.state.userType}
-          allBigs={this.state.allBigs}
-          allLittles={this.state.allLittles}
-          />);
-      case "login":
-        return (<Login/>);
-      case "signup":
-        return (<SignUp/>);
-      case "general":
-        return (<GeneralContainer/>);
-      default:
-        return null
-    }
-  }
 
   render() {
     return (
       <div className="App">
 {/* REMOVE BELOW!!! FOR TESTING ONLY */}
         <div>
-          <span>for testing</span><span></span>
-          <select onChange={(e) => {                        
-              this.setState({userType: e.target.value})
-            }}>
-            <option value="admins">admin</option>
-            <option value="bigs">big</option>
-            <option value="littles">little</option>
-            <option selected value="none">none (logged in user)</option>
-          </select> <span></span>
-          <select onChange={(e) => {                        
-              this.setState({mainShow: e.target.value})
-            }}>
-            <option value="signup">signup</option>
-            <option value="login">login</option>
-            <option value="main">main</option>
-            <option selected value="general">general (mainShow)</option>
-          </select>  
+          <span>who is logged in:</span>
+          <select 
+            onChange={(e) => {this.setState({userType: e.target.value})}}
+            value={this.state.userType}
+          >
+            <option value="admin"   >admin</option>
+            <option value="big"     >big</option>
+            <option value="little"  >little</option>
+            <option value="none"    >none (logged in user)</option>
+          </select>
         </div>
 {/* REMOVE ABOVE!!! FOR TESTING ONLY */}                                       
         
 
         <NavBar 
           userType={this.state.userType}
-          mainShow={this.mainShow}
+          menuSelect={this.menuSelect}
         />
-        {/* MAIN CONTAINER RENDER */}
-        {this.homepageRender(this.state.mainShow)}
-
-
+        <Switch>
+          <Route exact path='/' render={() =>
+            <GeneralContainer
+          />}/>
+          <Route exact path="/user" render={(routerProps) => 
+            <MainContainer 
+              {...routerProps}
+              userType={this.state.userType} 
+              menuSelect={this.state.menuSelect}
+              allBigs={this.state.allBigs} 
+              allLittles={this.state.allLittles}
+          />}/>
+          <Route exact path="/login" render={(routerProps) => 
+            <Login
+              {...routerProps}
+          />}/>
+          <Route exact path="/signup" render={(routerProps) =>
+            <SignUp 
+              {...routerProps}
+              setUser={this.setUser}
+          />}/>
+        </Switch>
       </div>
     );
   }

@@ -1,24 +1,28 @@
 import React from 'react';
-import AdminContainer       from './AdminContainer';
-import BigsContainer        from './BigsContainer';
-import LittlesContainer     from './LittlesContainer';
+import BigsContainer        from '../Bigs/BigsContainer';
+import LittlesContainer     from '../Littles/LittlesContainer';
+import AdminContainer       from '../Admins/AdminContainer';
+
 
 class MainContainer extends React.Component {
 
     currentContainer = (userType) => {
         switch (userType) {
-            case "admin":
-                return (<AdminContainer
-                        allBigs={this.props.allBigs}
-                        allLittles={this.props.allLittles}
-                        />);
             case "big":
                 return (<BigsContainer
                         // allBigs={this.props.allBigs}  // might not be needed
+                        menuSelect={this.props.menuSelect}
                         />);
             case "little":
                 return (<LittlesContainer
                         allLittles={this.props.allLittles}
+                        menuSelect={this.props.menuSelect}
+                        />);
+            case "admin":
+                return (<AdminContainer
+                        allBigs={this.props.allBigs}
+                        allLittles={this.props.allLittles}
+                        menuSelect={this.props.menuSelect}
                         />);
             default:
                 return null
@@ -27,7 +31,9 @@ class MainContainer extends React.Component {
 
     render() {
         return(
-            this.currentContainer(this.props.userType)
+            <div>
+                {this.currentContainer(this.props.userType)}
+            </div>
         )
     }
 
